@@ -89,7 +89,7 @@ class EllimanSpider(scrapy.Spider):
 					req = self.set_proxies(url, self.parse_url)
 					req.meta["start"] = start_url
 					yield req
-					return
+					# return
 
 	def download_image(self, response):
 		# print ( "**********************DOWNLOAD IMAGE************************" )
@@ -102,8 +102,6 @@ class EllimanSpider(scrapy.Spider):
 
 		with open(dir + "/" + filename, 'wb') as f:
 			f.write(response.body)
-
-
 
 	def parse_url(self, response):
 		div_list = response.xpath("//div[@class='w_table']/table/tbody/tr")
@@ -123,7 +121,7 @@ class EllimanSpider(scrapy.Spider):
 				# return
 
 	def parse_detail_addition(self, response):
-		print "************ Addition ************", response.url
+		# print "************ Addition ************", response.url
 		picture_url = response.xpath("//div[@class='photo']/img/@src").extract_first().strip().encode("utf8")
 
 		contact_list = response.xpath("//div[@class='wysiwyg office-mobile _bigger']/p")
@@ -182,7 +180,7 @@ class EllimanSpider(scrapy.Spider):
 		yield item
 
 	def parse_detail(self, response):
-		print "************", response.meta["root"], response.url
+		# print "************", response.meta["root"], response.url
 
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
