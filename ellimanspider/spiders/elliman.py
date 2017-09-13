@@ -55,11 +55,11 @@ class EllimanSpider(scrapy.Spider):
 				url = start_url + "/" + letter
 
 				print url
-				
+
 				req = self.set_proxies(url, self.parse_url)
 				yield req
 
-			return
+				return
 
 	def parse_url(self, response):
 		div_list = response.xpath("//div[@class='w_table']/table/tbody/tr")
@@ -69,16 +69,16 @@ class EllimanSpider(scrapy.Spider):
 				name_str = div_item.xpath("td[@class='first']/a/text()").extract_first().strip().encode("utf8")
 				email = div_item.xpath("td[@class='last']/a/text()").extract_first().strip().encode("utf8")
 
-				# href_link = "https://thehollyparkerteam.elliman.com"
+				href_link = "https://www.elliman.com/real-estate-agent/annie-azzo/12407"
 				req = self.set_proxies(href_link, self.parse_detail)
 				req.meta["name"] = name_str
 				req.meta["email"] = email
 				req.meta["root"] = response.url
 				yield req
-				# return
+				return
 
 	def parse_detail_addition(self, response):
-		# print "************ Addition ************", response.url
+		print "************ Addition ************", response.url
 		picture_url = response.xpath("//div[@class='photo']/img/@src").extract_first().strip().encode("utf8")
 
 		contact_list = response.xpath("//div[@class='wysiwyg office-mobile _bigger']/p")
@@ -135,7 +135,7 @@ class EllimanSpider(scrapy.Spider):
 		yield item
 
 	def parse_detail(self, response):
-		# print "************", respose.meta["root"], response.url
+		print "************", response.meta["root"], response.url
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
 		except:
