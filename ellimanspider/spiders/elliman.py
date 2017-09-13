@@ -128,6 +128,7 @@ class EllimanSpider(scrapy.Spider):
 		item["fax"] = fax_phone_str
 		item["email"] = response.meta["email"]
 		item["picture"] = picture_url
+		item["picture_file_name"] = picture_url.split("/")[-1]
 		item["url"] = response.url
 
 		yield item
@@ -195,5 +196,6 @@ class EllimanSpider(scrapy.Spider):
 						item["email"] = response.meta["email"]
 						item["picture"] = picture_url
 						item["url"] = response.url
+						item["picture_file_name"] = picture_url.split("/")[-1]
 
 						yield item
