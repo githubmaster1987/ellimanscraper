@@ -51,6 +51,25 @@ class EllimanSpider(scrapy.Spider):
 		# print "**********************************"
 		# print "Start"
 		# print "**********************************"
+		# csv_file_name = "data.csv"
+		# with open(csv_file_name) as csvfile:
+	 #        reader = csv.reader(csvfile)
+
+	 #        for i, input_item in enumerate(reader):
+	 #            if i>0:
+		# 			folder_name = "image"
+		# 	        image_url = row[2]
+		# 	        file_name = str(filter(str.isdigit, image_url))  + ".jpg"
+			        
+		# 	        filepath = "files/" + folder_name + "/" + file_name
+		# 	        if os.path.isfile(filepath) == False:
+		# 	            req = self.set_proxies(image_url, self.download_image)
+		# 	            req.meta["folder"] = folder_name
+		# 	            req.meta["filename"] = file_name
+		# 	            yield req
+
+		# return
+
 		letter_str = "abcdefghijklmnopqrstuvwxyz"
 		letter_str_list = list(letter_str)
 		for letter in letter_str_list:
@@ -62,6 +81,20 @@ class EllimanSpider(scrapy.Spider):
 				req = self.set_proxies(url, self.parse_url)
 				req.meta["start"] = start_url
 				yield req
+
+	def download_image(self, response):
+        # print ( "**********************DOWNLOAD IMAGE************************" )
+        filename =  response.meta["filename"]
+        dir = os.path.dirname("files/" + response.meta["folder"]+"/")
+        try:
+            os.stat(dir)
+        except:
+            os.mkdir(dir)
+
+        with open(dir + "/" + filename, 'wb') as f:
+            f.write(response.body)
+
+
 
 	def parse_url(self, response):
 		div_list = response.xpath("//div[@class='w_table']/table/tbody/tr")
@@ -141,13 +174,14 @@ class EllimanSpider(scrapy.Spider):
 
 	def parse_detail(self, response):
 		# print "************", response.meta["root"], response.url
-		
+
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
 		except:
 			req = self.set_proxies(response.url + "/about", self.parse_detail_addition)
 			req.meta["name"] = response.meta["name"]
 			req.meta["email"] = response.meta["email"]
+			req.meta["start"] = response.meta["start"]
 			yield req
 			return
 
