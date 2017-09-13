@@ -81,7 +81,7 @@ class EllimanSpider(scrapy.Spider):
 				# return
 
 	def parse_detail_addition(self, response):
-		print "************ Addition ************", response.url
+		# print "************ Addition ************", response.url
 		picture_url = response.xpath("//div[@class='photo']/img/@src").extract_first().strip().encode("utf8")
 
 		contact_list = response.xpath("//div[@class='wysiwyg office-mobile _bigger']/p")
@@ -140,7 +140,8 @@ class EllimanSpider(scrapy.Spider):
 		yield item
 
 	def parse_detail(self, response):
-		print "************", response.meta["root"], response.url
+		# print "************", response.meta["root"], response.url
+		
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
 		except:
@@ -204,5 +205,5 @@ class EllimanSpider(scrapy.Spider):
 						item["url"] = response.url
 						item["picture_file_name"] = picture_url.split("/")[-1]
 						item["start"] = response.meta["start"]
-						
+
 						yield item
