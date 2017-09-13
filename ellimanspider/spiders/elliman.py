@@ -17,6 +17,9 @@ sys.setdefaultencoding('utf8')
 class EllimanSpider(scrapy.Spider):
 	name = "elliman"
 	# allowed_domains = ["elliman.com"]
+
+	method = ""
+
 	start_urls = [
 		'https://www.elliman.com/agents/new-york-city',
 		'https://www.elliman.com/agents/long-island',
@@ -47,52 +50,56 @@ class EllimanSpider(scrapy.Spider):
 		req.headers['User-Agent'] = user_agent
 		return req
 
+	def __init__(self, method ="", *args, **kwargs):
+		super(EllimanSpider, self).__init__(*args, **kwargs)
+		self.method = method
+
 	def start_requests(self):
 		# print "**********************************"
 		# print "Start"
 		# print "**********************************"
-		# csv_file_name = "data.csv"
-		# with open(csv_file_name) as csvfile:
-	 #        reader = csv.reader(csvfile)
+		if self.method != "":
+			csv_file_name = "data.csv"
+			with open(csv_file_name) as csvfile:
+				reader = csv.reader(csvfile)
 
-	 #        for i, input_item in enumerate(reader):
-	 #            if i>0:
-		# 			folder_name = "image"
-		# 	        image_url = row[2]
-		# 	        file_name = str(filter(str.isdigit, image_url))  + ".jpg"
-			        
-		# 	        filepath = "files/" + folder_name + "/" + file_name
-		# 	        if os.path.isfile(filepath) == False:
-		# 	            req = self.set_proxies(image_url, self.download_image)
-		# 	            req.meta["folder"] = folder_name
-		# 	            req.meta["filename"] = file_name
-		# 	            yield req
+				for i, input_item in enumerate(reader):
+					if i>0:
+						folder_name = "image"
+						image_url = row[2]
+						file_name = str(filter(str.isdigit, image_url))  + ".jpg"
+						
+						filepath = "files/" + folder_name + "/" + file_name
+						if os.path.isfile(filepath) == False:
+							req = self.set_proxies(image_url, self.download_image)
+							req.meta["folder"] = folder_name
+							req.meta["filename"] = file_name
+							yield req
 
-		# return
+		else:
+			letter_str = "abcdefghijklmnopqrstuvwxyz"
+			letter_str_list = list(letter_str)
+			for letter in letter_str_list:
+				for start_url in self.start_urls:
+					url = start_url + "/" + letter
 
-		letter_str = "abcdefghijklmnopqrstuvwxyz"
-		letter_str_list = list(letter_str)
-		for letter in letter_str_list:
-			for start_url in self.start_urls:
-				url = start_url + "/" + letter
+					print url
 
-				print url
-
-				req = self.set_proxies(url, self.parse_url)
-				req.meta["start"] = start_url
-				yield req
+					req = self.set_proxies(url, self.parse_url)
+					req.meta["start"] = start_url
+					yield req
 
 	def download_image(self, response):
-        # print ( "**********************DOWNLOAD IMAGE************************" )
-        filename =  response.meta["filename"]
-        dir = os.path.dirname("files/" + response.meta["folder"]+"/")
-        try:
-            os.stat(dir)
-        except:
-            os.mkdir(dir)
+		# print ( "**********************DOWNLOAD IMAGE************************" )
+		filename =  response.meta["filename"]
+		dir = os.path.dirname("files/" + response.meta["folder"]+"/")
+		try:
+			os.stat(dir)
+		except:
+			os.mkdir(dir)
 
-        with open(dir + "/" + filename, 'wb') as f:
-            f.write(response.body)
+		with open(dir + "/" + filename, 'wb') as f:
+			f.write(response.body)
 
 
 
