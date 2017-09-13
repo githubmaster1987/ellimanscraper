@@ -48,9 +48,9 @@ class EllimanSpider(scrapy.Spider):
 		return req
 
 	def start_requests(self):
-		print "**********************************"
-		print "Start"
-		print "**********************************"
+		# print "**********************************"
+		# print "Start"
+		# print "**********************************"
 		letter_str = "abcdefghijklmnopqrstuvwxyz"
 		letter_str_list = list(letter_str)
 		for letter in letter_str_list:
