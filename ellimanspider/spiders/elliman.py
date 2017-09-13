@@ -60,6 +60,7 @@ class EllimanSpider(scrapy.Spider):
 				print url
 
 				req = self.set_proxies(url, self.parse_url)
+				req.meta["start"] = start_url
 				yield req
 
 	def parse_url(self, response):
@@ -75,6 +76,7 @@ class EllimanSpider(scrapy.Spider):
 				req.meta["name"] = name_str
 				req.meta["email"] = email
 				req.meta["root"] = response.url
+				req.meta["start"] = response.meta["start"]
 				yield req
 				# return
 
@@ -133,6 +135,7 @@ class EllimanSpider(scrapy.Spider):
 		item["picture"] = picture_url
 		item["picture_file_name"] = picture_url.split("/")[-1]
 		item["url"] = response.url
+		item["start"] = response.meta["start"]
 
 		yield item
 
@@ -200,5 +203,6 @@ class EllimanSpider(scrapy.Spider):
 						item["picture"] = picture_url
 						item["url"] = response.url
 						item["picture_file_name"] = picture_url.split("/")[-1]
-
+						item["start"] = response.meta["start"]
+						
 						yield item

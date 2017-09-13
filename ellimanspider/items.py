@@ -24,5 +24,6 @@ class EllimanspiderItem(scrapy.Item):
 	email = scrapy.Field()
 	picture = scrapy.Field()
 	url = scrapy.Field()
+	start = scrapy.Field()
 	picture_file_name = scrapy.Field()
 	
