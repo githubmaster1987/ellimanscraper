@@ -139,6 +139,7 @@ class EllimanSpider(scrapy.Spider):
 			req.meta["name"] = response.meta["name"]
 			req.meta["email"] = response.meta["email"]
 			yield req
+			return
 
 		detail_p = response.xpath("//div[@class='wysiwyg _dark _with_padding']/p").extract_first()
 		
