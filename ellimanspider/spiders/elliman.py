@@ -53,8 +53,12 @@ class EllimanSpider(scrapy.Spider):
 		for letter in letter_str_list:
 			for start_url in self.start_urls:
 				url = start_url + "/" + letter
+
+				print url
+				
 				req = self.set_proxies(url, self.parse_url)
 				yield req
+
 			return
 
 	def parse_url(self, response):
@@ -131,7 +135,7 @@ class EllimanSpider(scrapy.Spider):
 		yield item
 
 	def parse_detail(self, response):
-		print "************", respose.meta["root"], response.url
+		# print "************", respose.meta["root"], response.url
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
 		except:
