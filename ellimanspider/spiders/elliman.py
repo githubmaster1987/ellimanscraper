@@ -69,7 +69,7 @@ class EllimanSpider(scrapy.Spider):
 				req = self.set_proxies(href_link, self.parse_detail)
 				req.meta["name"] = name_str
 				req.meta["email"] = email
-				req.meta["href_link"] = href_link
+				req.meta["root"] = response.url
 				yield req
 				# return
 
@@ -131,7 +131,7 @@ class EllimanSpider(scrapy.Spider):
 		yield item
 
 	def parse_detail(self, response):
-		# print "************", response.url
+		print "************", respose.meta["root"], response.url
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
 		except:
