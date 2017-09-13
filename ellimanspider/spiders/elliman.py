@@ -59,8 +59,6 @@ class EllimanSpider(scrapy.Spider):
 				req = self.set_proxies(url, self.parse_url)
 				yield req
 
-				return
-
 	def parse_url(self, response):
 		div_list = response.xpath("//div[@class='w_table']/table/tbody/tr")
 		if len(div_list) > 0:
