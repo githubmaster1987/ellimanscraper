@@ -9,6 +9,19 @@ import scrapy
 
 
 class EllimanspiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+	# define the fields for your item here like:
+	full_name = scrapy.Field()
+	last_name = scrapy.Field()
+	first_name = scrapy.Field()
+	full_address = scrapy.Field()
+	address1 = scrapy.Field()
+	address2 = scrapy.Field()
+	address3 = scrapy.Field()
+	address4 = scrapy.Field()
+	office = scrapy.Field()
+	mobile = scrapy.Field()
+	fax = scrapy.Field()
+	email = scrapy.Field()
+	picture = scrapy.Field()
+	url = scrapy.Field()
+	

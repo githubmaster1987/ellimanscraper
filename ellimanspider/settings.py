@@ -13,7 +13,7 @@ BOT_NAME = 'ellimanspider'
 
 SPIDER_MODULES = ['ellimanspider.spiders']
 NEWSPIDER_MODULE = 'ellimanspider.spiders'
-
+LOG_LEVEL = "INFO"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'ellimanspider (+http://www.yourdomain.com)'
@@ -24,7 +24,7 @@ NEWSPIDER_MODULE = 'ellimanspider.spiders'
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY=3
+DOWNLOAD_DELAY=3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN=16
 #CONCURRENT_REQUESTS_PER_IP=16
