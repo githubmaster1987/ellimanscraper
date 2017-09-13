@@ -63,18 +63,19 @@ class EllimanSpider(scrapy.Spider):
 			with open(csv_file_name) as csvfile:
 				reader = csv.reader(csvfile)
 
-				for i, input_item in enumerate(reader):
+				for i, row in enumerate(reader):
 					if i>0:
-						folder_name = "image"
-						image_url = row[2]
-						file_name = str(filter(str.isdigit, image_url))  + ".jpg"
-						
-						filepath = "files/" + folder_name + "/" + file_name
-						if os.path.isfile(filepath) == False:
-							req = self.set_proxies(image_url, self.download_image)
-							req.meta["folder"] = folder_name
-							req.meta["filename"] = file_name
-							yield req
+						image_url = row[13]
+						file_name = row[14]
+
+						filepath = "files/" + file_name
+						print image_url, file_name
+						return
+						# if os.path.isfile(filepath) == False:
+						# 	req = self.set_proxies(image_url, self.download_image)
+						# 	req.meta["folder"] = folder_name
+						# 	req.meta["filename"] = file_name
+						# 	yield req
 
 		else:
 			letter_str = "abcdefghijklmnopqrstuvwxyz"
@@ -88,6 +89,7 @@ class EllimanSpider(scrapy.Spider):
 					req = self.set_proxies(url, self.parse_url)
 					req.meta["start"] = start_url
 					yield req
+					return
 
 	def download_image(self, response):
 		# print ( "**********************DOWNLOAD IMAGE************************" )
@@ -121,7 +123,7 @@ class EllimanSpider(scrapy.Spider):
 				# return
 
 	def parse_detail_addition(self, response):
-		# print "************ Addition ************", response.url
+		print "************ Addition ************", response.url
 		picture_url = response.xpath("//div[@class='photo']/img/@src").extract_first().strip().encode("utf8")
 
 		contact_list = response.xpath("//div[@class='wysiwyg office-mobile _bigger']/p")
@@ -176,11 +178,11 @@ class EllimanSpider(scrapy.Spider):
 		item["picture_file_name"] = picture_url.split("/")[-1]
 		item["url"] = response.url
 		item["start"] = response.meta["start"]
-
+		print item
 		yield item
 
 	def parse_detail(self, response):
-		# print "************", response.meta["root"], response.url
+		print "************", response.meta["root"], response.url
 
 		try:
 			picture_url = response.xpath("//div[@class='w_img_inner']/img/@src").extract_first().strip().encode("utf8")
@@ -191,7 +193,7 @@ class EllimanSpider(scrapy.Spider):
 			req.meta["start"] = response.meta["start"]
 			yield req
 			return
-
+		
 		detail_p = response.xpath("//div[@class='wysiwyg _dark _with_padding']/p").extract_first()
 		
 		if len(detail_p) > 0:
