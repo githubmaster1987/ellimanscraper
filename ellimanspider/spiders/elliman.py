@@ -67,15 +67,19 @@ class EllimanSpider(scrapy.Spider):
 					if i>0:
 						image_url = row[13]
 						file_name = row[14]
+						city_url = row[15]
 
-						filepath = "files/" + file_name
-						print image_url, file_name
-						return
-						# if os.path.isfile(filepath) == False:
-						# 	req = self.set_proxies(image_url, self.download_image)
-						# 	req.meta["folder"] = folder_name
-						# 	req.meta["filename"] = file_name
-						# 	yield req
+
+						folder_name = city_url.split("/")[-1]
+
+						print folder_name, image_url
+						filepath = "files/" + folder_name + "/" +file_name
+						
+						if os.path.isfile(filepath) == False:
+							req = self.set_proxies(image_url, self.download_image)
+							req.meta["folder"] = folder_name
+							req.meta["filename"] = file_name
+							yield req
 
 		else:
 			letter_str = "abcdefghijklmnopqrstuvwxyz"
